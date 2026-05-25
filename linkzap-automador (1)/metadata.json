@@ -1,0 +1,6 @@
+{
+  "name": "LinkZap Automador",
+  "description": "Plataforma escalável para automação, otimização por IA e gestão simplificada de links personalizados de WhatsApp para catálogos de produtos.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

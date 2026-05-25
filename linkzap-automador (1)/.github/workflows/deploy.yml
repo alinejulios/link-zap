@@ -1,0 +1,44 @@
+# GitHub Actions Workflow automatically configured to deploy this project to GitHub Pages
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    # Trigger deployment when pushing to master or main branches
+    branches:
+      - main
+      - master
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code Archetype
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Project Dependencies
+        run: npm install
+
+      - name: Build Web Application
+        # Since this is a static host build, we compile pure static assets inside the 'dist/' folder
+        # 'vite build' will compile the client-side SPA with relative assets correctly
+        run: npx vite build
+
+      - name: Deploy Compiled Assets to GitHub Pages
+        # We leverage the highly reliable JamesIves/github-pages-deploy-action to push the 'dist/' directory
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist # The folder where build outputs are compiled
+          branch: gh-pages # The branch where static assets are pushed for hosting
+          clean: true # Remove existing stale files in the target deployment branch
